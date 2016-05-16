@@ -14,12 +14,13 @@ module OmniAuth
         SIMPLE_SID_FIELD_NAME = "SessId"
       end
 
-      args [:runame, :devid, :appid, :certid, :environment, :auth_type]
+      args [:runame, :devid, :appid, :certid, :site_id, :environment, :auth_type]
       option :name, "ebay"
       option :runame, nil
       option :devid, nil
       option :appid, nil
       option :certid, nil
+      option :site_id, nil
       option :environment, :production
       option :auth_type, AuthType::Simple
 
@@ -41,7 +42,7 @@ module OmniAuth
       end
 
       def site_id
-        (request.params[:site_id] || request.params['site_id']).to_s
+        (request.params[:site_id] || request.params['site_id'] || options.site_id).to_s
       end
 
       #1: We'll get to the request_phase by accessing /auth/ebay

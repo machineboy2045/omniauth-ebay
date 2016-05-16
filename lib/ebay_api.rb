@@ -13,11 +13,27 @@ module EbayAPI
     end
   end
 
-  EBAY_PRODUCTION_LOGIN_URL = "https://signin.ebay.com/ws/eBayISAPI.dll"
-  EBAY_SANDBOX_LOGIN_URL = "https://signin.sandbox.ebay.com/ws/eBayISAPI.dll"
-
   EBAY_PRODUCTION_XML_API_URL = "https://api.ebay.com/ws/api.dll"
   EBAY_SANDBOX_XML_API_URL = "https://api.sandbox.ebay.com/ws/api.dll"
+
+  EBAY_SITES = {
+    '0'   => 'ebay.com',
+    '15'  => 'ebay.com.au',
+    '16'  => 'ebay.at',
+    '123' => 'benl.ebay.be',
+    '23'  => 'befr.ebay.be',
+    '2'   => 'ebay.ca',
+    '210' => 'cafr.ebay.ca',
+    '71'  => 'ebay.fr',
+    '77'  => 'ebay.de',
+    '205' => 'ebay.ie',
+    '101' => 'ebay.it',
+    '146' => 'ebay.nl',
+    '212' => 'ebay.pl',
+    '186' => 'ebay.es',
+    '193' => 'ebay.ch',
+    '3'   => 'ebay.co.uk'
+  }
 
 
   def sandbox?
@@ -25,8 +41,12 @@ module EbayAPI
   end
 
   def login_url
-    return EBAY_SANDBOX_LOGIN_URL if sandbox?
-    EBAY_PRODUCTION_LOGIN_URL
+    site_url = EBAY_SITES[site_id]
+    if sandbox?
+      "https://signin.sandbox.#{site_url}/ws/eBayISAPI.dll"
+    else
+      "https://signin.#{site_url}/ws/eBayISAPI.dll"
+    end
   end
 
   def api_url
@@ -131,7 +151,7 @@ module EbayAPI
         'X-EBAY-API-DEV-NAME' => options.devid,
         'X-EBAY-API-APP-NAME' => options.appid,
         'X-EBAY-API-CERT-NAME' => options.certid,
-        'X-EBAY-API-SITEID' => options.siteid.to_s,
+        'X-EBAY-API-SITEID' => site_id,
         'Content-Type' => X_EBAY_API_REQUEST_CONTENT_TYPE,
         'Content-Length' => request_length
     }

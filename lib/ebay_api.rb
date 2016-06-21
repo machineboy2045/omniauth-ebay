@@ -18,6 +18,7 @@ module EbayAPI
 
   EBAY_SITES = {
     '0'   => 'ebay.com',
+    '100' => 'ebay.com',
     '15'  => 'ebay.com.au',
     '16'  => 'ebay.at',
     '123' => 'benl.ebay.be',
